@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { Track, getTracks, addTrack } from '../lib/tracksService';
 
@@ -8,50 +10,54 @@ export default function HomePage() {
   const [album, setAlbum] = useState('');
 
   useEffect(() => {
-    async function fetchTracks() {
-      const data = await getTracks();
-      setTracks(data);
-    }
     fetchTracks();
   }, []);
 
-  async function handleAdd() {
-    if (!title || !artist || !album) return;
-    const newTrack = { title, artist, album };
-    const added = await addTrack(newTrack);
-    setTracks([...(tracks || []), ...added]);
-    setTitle('');
-    setArtist('');
-    setAlbum('');
+  async function fetchTracks() {
+    try {
+      const data = await getTracks();
+      setTracks(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  const inputStyle = { margin: '5px', padding: '5px' };
-  const buttonStyle = { margin: '5px', padding: '5px' };
-  const thStyle = { border: '1px solid black', padding: '5px' };
+  async function handleAdd() {
+    if (!title || !artist || !album) return;
+    try {
+      await addTrack({ title, artist, album });
+      setTitle('');
+      setArtist('');
+      setAlbum('');
+      fetchTracks();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div style={{ maxWidth: '800px', margin: '20px auto', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ textAlign: 'center' }}>Lista utworów</h1>
-      <div>
-        <input placeholder="Tytuł" value={title} onChange={(e) => setTitle(e.target.value)} style={inputStyle} />
-        <input placeholder="Wykonawca" value={artist} onChange={(e) => setArtist(e.target.value)} style={inputStyle} />
-        <input placeholder="Album" value={album} onChange={(e) => setAlbum(e.target.value)} style={inputStyle} />
-        <button onClick={handleAdd} style={buttonStyle}>Dodaj utwór</button>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+        <input placeholder="Tytuł" value={title} onChange={e => setTitle(e.target.value)} />
+        <input placeholder="Wykonawca" value={artist} onChange={e => setArtist(e.target.value)} />
+        <input placeholder="Album" value={album} onChange={e => setAlbum(e.target.value)} />
+        <button onClick={handleAdd}>Dodaj utwór</button>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+      <h1 style={{ textAlign: 'center' }}>Lista utworów</h1>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={thStyle}>Tytuł</th>
-            <th style={thStyle}>Wykonawca</th>
-            <th style={thStyle}>Album</th>
+            <th>Tytuł</th>
+            <th>Wykonawca</th>
+            <th>Album</th>
           </tr>
         </thead>
         <tbody>
-          {tracks.map((track) => (
+          {tracks.map(track => (
             <tr key={track.id}>
-              <td style={thStyle}>{track.title}</td>
-              <td style={thStyle}>{track.artist}</td>
-              <td style={thStyle}>{track.album}</td>
+              <td>{track.title}</td>
+              <td>{track.artist}</td>
+              <td>{track.album}</td>
             </tr>
           ))}
         </tbody>
@@ -59,6 +65,7 @@ export default function HomePage() {
     </div>
   );
 }
+
 
 
 
