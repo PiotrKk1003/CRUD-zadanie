@@ -1,32 +1,35 @@
-import { supabase } from './supabaseClient';
-import { Track } from './types';
+import { createClient } from '@supabase/supabase-js';
+import { supabaseUrl, supabaseAnonKey } from './supabaseClient';
+
+export type Track = {
+  id: string;
+  title: string;
+  artist: string;
+  album: string;
+  created_at?: string;
+};
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function getTracks(): Promise<Track[]> {
   const { data, error } = await supabase
-    .from<Track, Omit<Track, 'id' | 'created_at'>>('tracks') // Row i Insert/Update
+    .from<Track>('tracks')
     .select('*')
     .order('created_at', { ascending: false });
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw error;
   return data || [];
 }
 
-export async function addTrack(track: Omit<Track, 'id' | 'created_at'>): Promise<Track> {
+export async function addTrack(track: Omit<Track, 'id'>) {
   const { data, error } = await supabase
-    .from<Track, Omit<Track, 'id' | 'created_at'>>('tracks')
-    .insert([track])
-    .select()
-    .single();
+    .from<Track>('tracks')
+    .insert([track]);
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
+  if (error) throw error;
   return data;
 }
+
 
 
 
