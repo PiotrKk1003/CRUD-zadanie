@@ -20,6 +20,38 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Nowe funkcje - Rozszerzenie modułu (Wymaganie B)
+
+### Dodane pola do encji Track:
+
+#### 1. **Rok wydania (`year`)**
+- Typ: `number` (opcjonalny)
+- Opis: Rok wydania utworu
+- Walidacja: Wartości między 1900 a 2100
+- Użycie: Pozwala na katalogowanie utworów według roku wydania
+
+#### 2. **Ocena (`rating`)**
+- Typ: `number` (opcjonalny)
+- Opis: Ocena utworu w skali 0-10
+- Walidacja: Wartości między 0 a 10 (z dokładnością do 0.1)
+- Użycie: Umożliwia użytkownikom ocenianie utworów
+
+### Zmiany w kodzie:
+
+1. **Model/Interfejs** (`lib/tracksService.ts`):
+   - Dodano pola `year?: number` i `rating?: number` do interfejsu `Track`
+   - Zaktualizowano zapytania do bazy danych o nowe kolumny
+
+2. **API/Service** (`lib/tracksService.ts`):
+   - Funkcja `getTracks()` pobiera nowe pola z bazy danych
+   - Funkcja `addTrack()` obsługuje nowe pola przy dodawaniu utworów
+
+3. **Frontend** (`app/page.tsx`):
+   - Dodano pola formularza do wprowadzania roku i oceny
+   - Dodano kolumny w tabeli do wyświetlania roku i oceny
+   - Dodano walidację po stronie klienta (type="number", min/max)
+   - Obsługa konwersji wartości (parseInt dla roku, parseFloat dla oceny)
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
