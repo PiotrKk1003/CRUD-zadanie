@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Projekt: mini CRUD - Lista utworów
 
-## Getting Started
+Link do aplikacji (Vercel): https://crud-zadanie-7u2c.vercel.app
+Link do GitHubie: https://github.com/PiotrKk1003/CRUD-zadanie.git 
+Supabase: https://atltgidsxzorvrmupqyw.supabase.co
 
-First, run the development server:
+annon key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0bHRnaWRzeHpvcnZybXVwcXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzMyNTAsImV4cCI6MjA3NTkwOTI1MH0.b0Ol7Im7a8qkVJJ8M7jee50MHtALiAVc7DYlf5jC2r8
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Krótki opis:
+Prosta aplikacja do zarządzania listą utworów (CRUD) z autoryzacją użytkownika. Frontend: Next.js (TypeScript). Baza danych: Supabase (Postgres). Hosting: Vercel.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Technologie:
+- Next.js (App Router) + TypeScript  
+- Supabase (Postgres + Auth)  
+- Vercel (hosting)  
+- GitHub (repozytorium)
+- Styl prosty, bez frameworków CSS — czysty JSX + inline style
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Konto testowe:
+- email: pkonono1@stu.vistula.edu.pl
+- password: zenolut123  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Nowe funkcje - Rozszerzenie modułu (Wymaganie B)
 
-## Learn More
+Dodane pola do encji Track:
 
-To learn more about Next.js, take a look at the following resources:
+1.Rok wydania (`year`)
+- Typ: `number` (opcjonalny)
+- Opis: Rok wydania utworu
+- Walidacja: Wartości między 1900 a 2100
+- Użycie: Pozwala na katalogowanie utworów według roku wydania
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Ocena (`rating`)
+- Typ: `number` (opcjonalny)
+- Opis: Ocena utworu w skali 0-10
+- Walidacja: Wartości między 0 a 10 (z dokładnością do 0.1)
+- Użycie: Umożliwia użytkownikom ocenianie utworów
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Zmiany w kodzie:
 
-## Deploy on Vercel
+1. Model/Interfejs (`lib/tracksService.ts`):
+   - Dodano pola `year?: number` i `rating?: number` do interfejsu `Track`
+   - Zaktualizowano zapytania do bazy danych o nowe kolumny
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. API/Service (`lib/tracksService.ts`):
+   - Funkcja `getTracks()` pobiera nowe pola z bazy danych
+   - Funkcja `addTrack()` obsługuje nowe pola przy dodawaniu utworów
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Frontend (`app/page.tsx`):
+   - Dodano pola formularza do wprowadzania roku i oceny
+   - Dodano kolumny w tabeli do wyświetlania roku i oceny
+   - Dodano walidację po stronie klienta (type="number", min/max)
+   - Obsługa konwersji wartości (parseInt dla roku, parseFloat dla oceny)
+
