@@ -123,7 +123,7 @@ export default function HomePage() {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1 style={styles.title}>Lista utworów</h1>
-        <button onClick={handleLogout} style={styles.buttonSecondary}>Wyloguj</button>
+        <button onClick={handleLogout} style={styles.buttonLogout}>Wyloguj</button>
       </div>
 
       <div style={styles.addTrackContainer}>
@@ -196,11 +196,13 @@ const styles = {
   buttonPrimary: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
   buttonSecondary: { padding: "8px 16px", backgroundColor: "#e0e0e0", border: "none", borderRadius: "4px", cursor: "pointer" },
   buttonRegister: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
+  buttonLogout: { padding: "8px 16px", backgroundColor: "#d32f2f", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center" as const },
   addTrackContainer: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "10px", marginBottom: "20px" },
   smallButton: { padding: "4px 8px", marginRight: "5px", border: "none", borderRadius: "4px", backgroundColor: "#0070f3", color: "#fff", cursor: "pointer" },
   table: { width: "100%", borderCollapse: "collapse" as const },
 };
+
 
 
 
