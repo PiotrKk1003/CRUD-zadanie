@@ -16,11 +16,7 @@ export default function HomePage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
     return () => listener.subscription.unsubscribe();
   }, []);
 
@@ -144,13 +140,21 @@ export default function HomePage() {
           </tr>
         </thead>
         <tbody>
-          {tracks.map((t) => (
-            <tr key={t.id} style={styles.tr}>
-              <td style={styles.td}>{t.title}</td>
-              <td style={styles.td}>{t.artist}</td>
-              <td style={styles.td}>{t.album}</td>
+          {tracks.length > 0 ? (
+            tracks.map((t) => (
+              <tr key={t.id} style={styles.tr}>
+                <td style={styles.td}>{t.title}</td>
+                <td style={styles.td}>{t.artist}</td>
+                <td style={styles.td}>{t.album}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} style={styles.noData}>
+                Brak utworów do wyświetlenia
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
@@ -175,16 +179,19 @@ const styles = {
   title: {
     textAlign: "center" as const,
     margin: "0 0 20px 0",
+    color: "#111",
   },
   label: {
     display: "block",
     marginBottom: "5px",
     fontWeight: "bold" as const,
+    color: "#111",
   },
   inputLabel: {
     marginBottom: "5px",
     fontSize: "14px",
     fontWeight: "bold" as const,
+    color: "#111",
   },
   input: {
     width: "100%",
@@ -193,6 +200,8 @@ const styles = {
     borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "14px",
+    color: "#111",      // tekst widoczny
+    backgroundColor: "#fff", // tło jasne
   },
   inputGroup: {
     flex: "1 1 200px",
@@ -232,21 +241,31 @@ const styles = {
   table: {
     width: "100%",
     borderCollapse: "collapse" as const,
+    marginTop: "20px",
   },
   th: {
     textAlign: "left" as const,
     padding: "8px",
     borderBottom: "2px solid #ccc",
+    backgroundColor: "#ddd",
     fontWeight: "bold" as const,
+    color: "#111", // nagłówki widoczne
   },
   td: {
     padding: "8px",
     borderBottom: "1px solid #eee",
+    color: "#111", // tekst w komórkach widoczny
   },
   tr: {
     backgroundColor: "#fff",
   },
+  noData: {
+    padding: "8px",
+    textAlign: "center" as const,
+    color: "#666",
+  },
 };
+
 
 
 
