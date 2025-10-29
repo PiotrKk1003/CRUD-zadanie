@@ -188,15 +188,18 @@ export default function HomePage() {
 }
 
 const styles = {
-  container: {  maxWidth: "900px", 
-  margin: "40px auto", 
-  padding: "20px", 
-  fontFamily: "Arial, sans-serif", 
-  backgroundColor: "#fff", 
-  borderRadius: "8px",       
-  boxShadow: "0 2px 8px rgba(0,0,0,0.1)" },
+  container: {  
+    maxWidth: "900px", 
+    margin: "40px auto", 
+    padding: "20px", 
+    fontFamily: "Arial, sans-serif", 
+    backgroundColor: "#fff", 
+    borderRadius: "8px",       
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    color: "#111" 
+  },
   title: { textAlign: "center" as const },
-  input: { padding: "8px", borderRadius: "4px", border: "1px solid #ccc", width: "100%" },
+  input: { padding: "8px", borderRadius: "4px", border: "1px solid #ccc", width: "100%", color: "#111" },
   formGroup: { display: "flex", flexDirection: "column" as const, marginBottom: "10px" },
   buttonRow: { display: "flex", justifyContent: "center" as const, gap: "10px" },
   buttonPrimary: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
@@ -206,8 +209,21 @@ const styles = {
   header: { display: "flex", justifyContent: "space-between", alignItems: "center" as const },
   addTrackContainer: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "10px", marginBottom: "20px" },
   smallButton: { padding: "4px 8px", marginRight: "5px", border: "none", borderRadius: "4px", backgroundColor: "#0070f3", color: "#fff", cursor: "pointer" },
-  table: { width: "100%", borderCollapse: "collapse" as const },
+  table: { width: "100%", borderCollapse: "collapse" as const, color: "#111" },
+  th: { 
+    backgroundColor: "#f0f0f0", 
+    padding: "8px", 
+    textAlign: "left" as const, 
+    borderBottom: "1px solid #ccc",
+    color: "#111"
+  },
+  td: { 
+    padding: "8px", 
+    borderBottom: "1px solid #eee",
+    color: "#111"
+  },
 };
+
 
 
 
