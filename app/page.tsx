@@ -188,7 +188,13 @@ export default function HomePage() {
 }
 
 const styles = {
-  container: { maxWidth: "900px", margin: "40px auto", padding: "20px", fontFamily: "Arial, sans-serif" },
+  container: {  maxWidth: "900px", 
+  margin: "40px auto", 
+  padding: "20px", 
+  fontFamily: "Arial, sans-serif", 
+  backgroundColor: "#fff", 
+  borderRadius: "8px",       
+  boxShadow: "0 2px 8px rgba(0,0,0,0.1)" },
   title: { textAlign: "center" as const },
   input: { padding: "8px", borderRadius: "4px", border: "1px solid #ccc", width: "100%" },
   formGroup: { display: "flex", flexDirection: "column" as const, marginBottom: "10px" },
