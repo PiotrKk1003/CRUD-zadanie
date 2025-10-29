@@ -12,7 +12,7 @@ export interface Track {
 
 export async function getTracks(): Promise<Track[]> {
   const { data, error } = await supabase
-    .from<Track>("tracks")
+    .from<Track, Track>("tracks") 
     .select("*")
     .order("created_at", { ascending: false });
 
