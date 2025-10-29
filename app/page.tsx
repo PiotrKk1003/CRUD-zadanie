@@ -10,7 +10,7 @@ export default function HomePage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [tracks, setTracks] = useState<Track[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [title, setTitle] = useState<string>("");
   const [artist, setArtist] = useState<string>("");
@@ -35,28 +35,45 @@ export default function HomePage() {
   }
 
   async function handleAddOrUpdate() {
-    if (!title || !artist) return;
-
-    const trackData = { title, artist, album, year, rating };
-
-    if (editingId !== null) {
-      await updateTrack(editingId, trackData);
-      setEditingId(null);
-    } else {
-      await addTrack(trackData);
+    if (!title.trim() || !artist.trim()) {
+      alert("Uzupełnij tytuł i artystę!");
+      return;
     }
 
-    setTitle(""); setArtist(""); setAlbum(""); setYear(""); setRating("");
-    fetchTracks();
+    const trackData = {
+      title,
+      artist,
+      album,
+      year: year ? parseInt(year) : null,
+      rating: rating ? parseFloat(rating) : null,
+    };
+
+    try {
+      if (editingId) {
+        await updateTrack(editingId, trackData);
+        setEditingId(null);
+      } else {
+        await addTrack(trackData);
+      }
+
+      setTitle(""); setArtist(""); setAlbum(""); setYear(""); setRating("");
+
+      fetchTracks();
+    } catch (error: any) {
+      alert("Błąd: " + error.message);
+    }
   }
 
   function handleEdit(track: Track) {
     setEditingId(track.id);
-    setTitle(track.title); setArtist(track.artist); setAlbum(track.album || "");
-    setYear(track.year || ""); setRating(track.rating || "");
+    setTitle(track.title);
+    setArtist(track.artist);
+    setAlbum(track.album || "");
+    setYear(track.year?.toString() || "");
+    setRating(track.rating?.toString() || "");
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id: string) {
     if (confirm("Czy na pewno chcesz usunąć ten utwór?")) {
       await deleteTrack(id);
       fetchTracks();
@@ -85,6 +102,7 @@ export default function HomePage() {
 
         <label style={styles.label}>Email</label>
         <input type="email" placeholder="Twój email" value={email} onChange={(e) => setEmail(e.target.value)} style={styles.input} />
+
         <label style={styles.label}>Hasło</label>
         <input type="password" placeholder="Twoje hasło" value={password} onChange={(e) => setPassword(e.target.value)} style={styles.input} />
 
@@ -125,7 +143,7 @@ export default function HomePage() {
           <input placeholder="Ocena" value={rating} onChange={(e) => setRating(e.target.value)} style={styles.input} />
         </div>
         <button onClick={handleAddOrUpdate} style={styles.buttonPrimary}>
-          {editingId !== null ? "Zapisz zmiany" : "Dodaj"}
+          {editingId ? "Zapisz zmiany" : "Dodaj"}
         </button>
       </div>
 
