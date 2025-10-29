@@ -3,15 +3,16 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { getTracks, addTrack, Track } from "../lib/tracksService";
+import { Session } from "@supabase/supabase-js";
 
 export default function HomePage() {
-  const [session, setSession] = useState<any>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [session, setSession] = useState<Session | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [tracks, setTracks] = useState<Track[]>([]);
-  const [title, setTitle] = useState("");
-  const [artist, setArtist] = useState("");
-  const [album, setAlbum] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [artist, setArtist] = useState<string>("");
+  const [album, setAlbum] = useState<string>("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -24,12 +25,16 @@ export default function HomePage() {
       }
     );
 
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
     if (session) {
       fetchTracks();
+    } else {
+      setTracks([]);
     }
   }, [session]);
 
@@ -132,6 +137,7 @@ export default function HomePage() {
     </div>
   );
 }
+
 
 
 
