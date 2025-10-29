@@ -12,8 +12,8 @@ export interface Track {
 
 export async function getTracks(): Promise<Track[]> {
   const { data, error } = await supabase
-    .from<Track, Track>("tracks") 
-    .select("*")
+    .from("tracks")
+    .select<Track>("*")
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
