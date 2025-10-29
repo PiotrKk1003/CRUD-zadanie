@@ -13,11 +13,11 @@ export interface Track {
 export async function getTracks(): Promise<Track[]> {
   const { data, error } = await supabase
     .from("tracks")
-    .select<Track>("*")
+    .select("*")
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
-  return data || [];
+  return (data || []) as Track[];
 }
 
 export async function addTrack(track: Omit<Track, "id" | "created_at">): Promise<void> {
