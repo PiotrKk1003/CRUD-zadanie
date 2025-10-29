@@ -43,9 +43,9 @@ export default function HomePage() {
     const trackData = {
       title,
       artist,
-      album,
-      year: year ? parseInt(year) : null,
-      rating: rating ? parseFloat(rating) : null,
+      album: album || undefined,
+      year: year ? parseInt(year) : undefined,
+      rating: rating ? parseFloat(rating) : undefined,
     };
 
     try {
