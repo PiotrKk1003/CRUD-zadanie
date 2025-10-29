@@ -101,8 +101,15 @@ export default function HomePage() {
       <div style={styles.container}>
         <h2 style={styles.title}>Zaloguj się lub zarejestruj</h2>
 
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} style={styles.input} />
-        <input type="password" placeholder="Hasło" value={password} onChange={(e) => setPassword(e.target.value)} style={styles.input} />
+        <div style={styles.formGroup}>
+          <label>Email</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={styles.input} />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label>Hasło</label>
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} style={styles.input} />
+        </div>
 
         <div style={styles.buttonRow}>
           <button onClick={handleLogin} style={styles.buttonPrimary}>Zaloguj</button>
@@ -120,18 +127,40 @@ export default function HomePage() {
       </div>
 
       <div style={styles.addTrackContainer}>
-        <input placeholder="Tytuł" value={title} onChange={(e) => setTitle(e.target.value)} style={styles.input} />
-        <input placeholder="Artysta" value={artist} onChange={(e) => setArtist(e.target.value)} style={styles.input} />
-        <input placeholder="Album" value={album} onChange={(e) => setAlbum(e.target.value)} style={styles.input} />
-        <input placeholder="Rok" value={year} onChange={(e) => setYear(e.target.value)} style={styles.input} />
-        <input placeholder="Ocena" value={rating} onChange={(e) => setRating(e.target.value)} style={styles.input} />
-        <button onClick={handleAddOrUpdate} style={styles.buttonPrimary}>{editingId ? "Zapisz" : "Dodaj"}</button>
+        <div style={styles.formGroup}>
+          <label>Tytuł</label>
+          <input value={title} onChange={e => setTitle(e.target.value)} style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Artysta</label>
+          <input value={artist} onChange={e => setArtist(e.target.value)} style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Album</label>
+          <input value={album} onChange={e => setAlbum(e.target.value)} style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Rok</label>
+          <input value={year} onChange={e => setYear(e.target.value)} style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label>Ocena</label>
+          <input value={rating} onChange={e => setRating(e.target.value)} style={styles.input} />
+        </div>
+        <button onClick={handleAddOrUpdate} style={styles.buttonPrimary}>
+          {editingId ? "Zapisz" : "Dodaj"}
+        </button>
       </div>
 
       <table style={styles.table}>
         <thead>
           <tr>
-            <th>Tytuł</th><th>Artysta</th><th>Album</th><th>Rok</th><th>Ocena</th><th>Akcje</th>
+            <th>Tytuł</th>
+            <th>Artysta</th>
+            <th>Album</th>
+            <th>Rok</th>
+            <th>Ocena</th>
+            <th>Akcje</th>
           </tr>
         </thead>
         <tbody>
@@ -148,7 +177,9 @@ export default function HomePage() {
               </td>
             </tr>
           )) : (
-            <tr><td colSpan={6} style={{ textAlign: "center" }}>Brak utworów</td></tr>
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center" }}>Brak utworów</td>
+            </tr>
           )}
         </tbody>
       </table>
@@ -159,15 +190,17 @@ export default function HomePage() {
 const styles = {
   container: { maxWidth: "900px", margin: "40px auto", padding: "20px", fontFamily: "Arial, sans-serif" },
   title: { textAlign: "center" as const },
-  input: { padding: "8px", margin: "5px", borderRadius: "4px", border: "1px solid #ccc" },
-  buttonRow: { display: "flex", justifyContent: "center" as const, gap: "10px", marginTop: "10px" },
-  buttonPrimary: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px" },
-  buttonSecondary: { padding: "8px 16px", backgroundColor: "#e0e0e0", border: "none", borderRadius: "4px" },
+  input: { padding: "8px", borderRadius: "4px", border: "1px solid #ccc", width: "100%" },
+  formGroup: { display: "flex", flexDirection: "column" as const, marginBottom: "10px" },
+  buttonRow: { display: "flex", justifyContent: "center" as const, gap: "10px" },
+  buttonPrimary: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
+  buttonSecondary: { padding: "8px 16px", backgroundColor: "#e0e0e0", border: "none", borderRadius: "4px", cursor: "pointer" },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center" as const },
-  addTrackContainer: { display: "flex", flexWrap: "wrap" as const, gap: "10px", marginTop: "20px", marginBottom: "20px" },
-  smallButton: { padding: "4px 8px", marginRight: "5px", border: "none", borderRadius: "4px", backgroundColor: "#0070f3", color: "#fff" },
-  table: { width: "100%", borderCollapse: "collapse" as const }
+  addTrackContainer: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "10px", marginBottom: "20px" },
+  smallButton: { padding: "4px 8px", marginRight: "5px", border: "none", borderRadius: "4px", backgroundColor: "#0070f3", color: "#fff", cursor: "pointer" },
+  table: { width: "100%", borderCollapse: "collapse" as const },
 };
+
 
 
 
