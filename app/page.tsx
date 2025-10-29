@@ -1,19 +1,37 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Track, getTracks, addTrack } from '../lib/tracksService';
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { getTracks, addTrack, Track } from "../lib/tracksService";
 
 export default function HomePage() {
+  const [session, setSession] = useState<any>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [tracks, setTracks] = useState<Track[]>([]);
-  const [title, setTitle] = useState('');
-  const [artist, setArtist] = useState('');
-  const [album, setAlbum] = useState('');
-  const [year, setYear] = useState('');
-  const [rating, setRating] = useState('');
+  const [title, setTitle] = useState("");
+  const [artist, setArtist] = useState("");
+  const [album, setAlbum] = useState("");
 
   useEffect(() => {
-    fetchTracks();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (session) {
+      fetchTracks();
+    }
+  }, [session]);
 
   async function fetchTracks() {
     const data = await getTracks();
@@ -22,69 +40,95 @@ export default function HomePage() {
 
   async function handleAdd() {
     if (!title || !artist) return;
-    await addTrack({ 
-      title, 
-      artist, 
-      album: album || undefined,
-      year: year ? parseInt(year) : undefined,
-      rating: rating ? parseFloat(rating) : undefined
-    });
-    setTitle('');
-    setArtist('');
-    setAlbum('');
-    setYear('');
-    setRating('');
+    await addTrack({ title, artist, album });
+    setTitle("");
+    setArtist("");
+    setAlbum("");
     fetchTracks();
   }
 
-  return (
-    <div style={{ maxWidth: '800px', margin: '20px auto', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ textAlign: 'center' }}>Lista utworów</h1>
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <input placeholder="Tytuł" value={title} onChange={e => setTitle(e.target.value)} />
-        <input placeholder="Wykonawca" value={artist} onChange={e => setArtist(e.target.value)} />
-        <input placeholder="Album" value={album} onChange={e => setAlbum(e.target.value)} />
-        <input 
-          type="number" 
-          placeholder="Rok" 
-          value={year} 
-          onChange={e => setYear(e.target.value)} 
-          min="1900"
-          max="2100"
+  async function handleLogin() {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) alert(error.message);
+  }
+
+  async function handleRegister() {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    if (error) alert(error.message);
+    else alert("Rejestracja zakończona — sprawdź e-mail, by potwierdzić konto!");
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+  }
+
+  if (!session) {
+    return (
+      <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
+        <h2>Zaloguj się lub zarejestruj</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
-        <input 
-          type="number" 
-          placeholder="Ocena (0-10)" 
-          value={rating} 
-          onChange={e => setRating(e.target.value)} 
-          min="0"
-          max="10"
-          step="0.1"
+        <input
+          type="password"
+          placeholder="Hasło"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
-        <button onClick={handleAdd}>Dodaj utwór</button>
+        <button onClick={handleLogin} style={{ marginRight: "10px" }}>
+          Zaloguj
+        </button>
+        <button onClick={handleRegister}>Zarejestruj</button>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Tytuł</th>
-            <th>Wykonawca</th>
-            <th>Album</th>
-            <th>Rok</th>
-            <th>Ocena</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tracks.map(track => (
-            <tr key={track.id}>
-              <td>{track.title}</td>
-              <td>{track.artist}</td>
-              <td>{track.album}</td>
-              <td>{track.year}</td>
-              <td>{track.rating}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: "800px", margin: "20px auto", fontFamily: "Arial" }}>
+      <h1 style={{ textAlign: "center" }}>Lista utworów</h1>
+      <button onClick={handleLogout} style={{ float: "right" }}>
+        Wyloguj
+      </button>
+      <div style={{ marginBottom: "20px" }}>
+        <input
+          placeholder="Tytuł"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          style={{ marginRight: "10px" }}
+        />
+        <input
+          placeholder="Artysta"
+          value={artist}
+          onChange={(e) => setArtist(e.target.value)}
+          style={{ marginRight: "10px" }}
+        />
+        <input
+          placeholder="Album"
+          value={album}
+          onChange={(e) => setAlbum(e.target.value)}
+          style={{ marginRight: "10px" }}
+        />
+        <button onClick={handleAdd}>Dodaj</button>
+      </div>
+
+      <ul>
+        {tracks.map((t) => (
+          <li key={t.id}>
+            <strong>{t.title}</strong> — {t.artist} ({t.album})
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
