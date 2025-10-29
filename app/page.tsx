@@ -113,7 +113,7 @@ export default function HomePage() {
 
         <div style={styles.buttonRow}>
           <button onClick={handleLogin} style={styles.buttonPrimary}>Zaloguj</button>
-          <button onClick={handleRegister} style={styles.buttonSecondary}>Zarejestruj</button>
+          <button onClick={handleRegister} style={styles.buttonRegister}>Zarejestruj</button>
         </div>
       </div>
     );
@@ -195,11 +195,13 @@ const styles = {
   buttonRow: { display: "flex", justifyContent: "center" as const, gap: "10px" },
   buttonPrimary: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
   buttonSecondary: { padding: "8px 16px", backgroundColor: "#e0e0e0", border: "none", borderRadius: "4px", cursor: "pointer" },
+  buttonRegister: { padding: "8px 16px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center" as const },
   addTrackContainer: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "10px", marginBottom: "20px" },
   smallButton: { padding: "4px 8px", marginRight: "5px", border: "none", borderRadius: "4px", backgroundColor: "#0070f3", color: "#fff", cursor: "pointer" },
   table: { width: "100%", borderCollapse: "collapse" as const },
 };
+
 
 
 
