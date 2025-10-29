@@ -59,8 +59,12 @@ export default function HomePage() {
       setTitle(""); setArtist(""); setAlbum(""); setYear(""); setRating("");
 
       fetchTracks();
-    } catch (error: any) {
-      alert("Błąd: " + error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert("Błąd: " + error.message);
+      } else {
+        alert("Nieznany błąd");
+      }
     }
   }
 
@@ -201,6 +205,7 @@ const styles = {
   noData: { padding: "8px", textAlign: "center" as const, color: "#666" },
   smallButton: { padding: "4px 8px", backgroundColor: "#0070f3", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "12px" },
 };
+
 
 
 
