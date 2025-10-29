@@ -62,20 +62,25 @@ export default function HomePage() {
     return (
       <div style={styles.container}>
         <h2 style={styles.title}>Zaloguj się lub zarejestruj</h2>
+
+        <label style={styles.label}>Email</label>
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Twój email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
         />
+
+        <label style={styles.label}>Hasło</label>
         <input
           type="password"
-          placeholder="Hasło"
+          placeholder="Twoje hasło"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.input}
         />
+
         <div style={styles.buttonRow}>
           <button onClick={handleLogin} style={styles.buttonPrimary}>
             Zaloguj
@@ -98,36 +103,56 @@ export default function HomePage() {
       </div>
 
       <div style={styles.addTrackContainer}>
-        <input
-          placeholder="Tytuł"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={styles.inputSmall}
-        />
-        <input
-          placeholder="Artysta"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-          style={styles.inputSmall}
-        />
-        <input
-          placeholder="Album"
-          value={album}
-          onChange={(e) => setAlbum(e.target.value)}
-          style={styles.inputSmall}
-        />
+        <div style={styles.inputGroup}>
+          <label style={styles.inputLabel}>Tytuł</label>
+          <input
+            placeholder="Tytuł utworu"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            style={styles.input}
+          />
+        </div>
+        <div style={styles.inputGroup}>
+          <label style={styles.inputLabel}>Artysta</label>
+          <input
+            placeholder="Artysta"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+            style={styles.input}
+          />
+        </div>
+        <div style={styles.inputGroup}>
+          <label style={styles.inputLabel}>Album</label>
+          <input
+            placeholder="Album"
+            value={album}
+            onChange={(e) => setAlbum(e.target.value)}
+            style={styles.input}
+          />
+        </div>
         <button onClick={handleAdd} style={styles.buttonPrimary}>
           Dodaj
         </button>
       </div>
 
-      <ul style={styles.trackList}>
-        {tracks.map((t) => (
-          <li key={t.id} style={styles.trackItem}>
-            <strong>{t.title}</strong> — {t.artist} {t.album && `(${t.album})`}
-          </li>
-        ))}
-      </ul>
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>Tytuł</th>
+            <th style={styles.th}>Artysta</th>
+            <th style={styles.th}>Album</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tracks.map((t) => (
+            <tr key={t.id} style={styles.tr}>
+              <td style={styles.td}>{t.title}</td>
+              <td style={styles.td}>{t.artist}</td>
+              <td style={styles.td}>{t.album}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -138,9 +163,8 @@ const styles = {
     margin: "40px auto",
     padding: "20px",
     fontFamily: "Arial, sans-serif",
-    backgroundColor: "#f8f8f8",
-    borderRadius: "10px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    backgroundColor: "#f7f7f7",
+    borderRadius: "8px",
   },
   header: {
     display: "flex",
@@ -152,60 +176,78 @@ const styles = {
     textAlign: "center" as const,
     margin: "0 0 20px 0",
   },
+  label: {
+    display: "block",
+    marginBottom: "5px",
+    fontWeight: "bold" as const,
+  },
+  inputLabel: {
+    marginBottom: "5px",
+    fontSize: "14px",
+    fontWeight: "bold" as const,
+  },
   input: {
     width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    fontSize: "16px",
-  },
-  inputSmall: {
     padding: "8px",
-    marginRight: "10px",
-    borderRadius: "6px",
+    marginBottom: "10px",
+    borderRadius: "4px",
     border: "1px solid #ccc",
     fontSize: "14px",
+  },
+  inputGroup: {
+    flex: "1 1 200px",
+    display: "flex",
+    flexDirection: "column" as const,
+    marginRight: "10px",
+    marginBottom: "10px",
+  },
+  addTrackContainer: {
+    display: "flex",
+    flexWrap: "wrap" as const,
+    alignItems: "flex-end",
+    marginBottom: "20px",
   },
   buttonRow: {
     display: "flex",
     justifyContent: "center",
     gap: "10px",
+    marginTop: "10px",
   },
   buttonPrimary: {
-    padding: "10px 20px",
+    padding: "8px 16px",
     backgroundColor: "#0070f3",
     color: "#fff",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "4px",
     cursor: "pointer",
   },
   buttonSecondary: {
-    padding: "10px 20px",
+    padding: "8px 16px",
     backgroundColor: "#e0e0e0",
     color: "#333",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "4px",
     cursor: "pointer",
   },
-  addTrackContainer: {
-    display: "flex",
-    flexWrap: "wrap" as const,
-    alignItems: "center",
-    marginBottom: "20px",
+  table: {
+    width: "100%",
+    borderCollapse: "collapse" as const,
   },
-  trackList: {
-    listStyle: "none",
-    padding: 0,
+  th: {
+    textAlign: "left" as const,
+    padding: "8px",
+    borderBottom: "2px solid #ccc",
+    fontWeight: "bold" as const,
   },
-  trackItem: {
-    padding: "10px",
-    marginBottom: "8px",
+  td: {
+    padding: "8px",
+    borderBottom: "1px solid #eee",
+  },
+  tr: {
     backgroundColor: "#fff",
-    borderRadius: "6px",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
   },
 };
+
 
 
 
