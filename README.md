@@ -87,4 +87,14 @@ Zmiany w kodzie:
    - Dodano kolumny w tabeli do wyświetlania roku i oceny
    - Dodano walidację po stronie klienta (type="number", min/max)
    - Obsługa konwersji wartości (parseInt dla roku, parseFloat dla oceny)
+     
+## Zrzuty ekranu
+
+![Widok główny aplikacji](vercel1.png)  
+Opis: główna strona (logowanie) 
+
+![Formularz dodawania wpisu](vercel2.png)  
+Opis: dodawanie, usuwanie, edycja 
+
+
 
