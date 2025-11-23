@@ -60,34 +60,33 @@ Dodane pola do encji Track:
 ## Learn More
 >>>>>>> 5b47526d5d0f21ed3a0086a4a22f53c1de4c1637
 
-1.Rok wydania (`year`)
-- Typ: `number` (opcjonalny)
-- Opis: Rok wydania utworu
-- Walidacja: Wartości między 1900 a 2100
-- Użycie: Pozwala na katalogowanie utworów według roku wydania
+## 🔐 Logowanie i autoryzacja (Supabase Auth)
 
-2. Ocena (`rating`)
-- Typ: `number` (opcjonalny)
-- Opis: Ocena utworu w skali 0-10
-- Walidacja: Wartości między 0 a 10 (z dokładnością do 0.1)
-- Użycie: Umożliwia użytkownikom ocenianie utworów
+Projekt wykorzystuje wbudowany system logowania Supabase, który zapewnia bezpieczną obsługę użytkowników.  
+Dostępne funkcje:
 
-Zmiany w kodzie:
+- ✨ Rejestracja użytkownika przy użyciu adresu e-mail i hasła  
+- 🔐 Logowanie istniejącego użytkownika  
+- 🚪 Wylogowanie użytkownika  
+- 🔒 Ochrona stron – użytkownik musi być zalogowany, aby korzystać z CRUD  
+- 🧭 Przekierowanie:  
+  - po pomyślnym logowaniu → `/dashboard`  
+  - po wylogowaniu → `/login`
 
-1. Model/Interfejs (`lib/tracksService.ts`):
-   - Dodano pola `year?: number` i `rating?: number` do interfejsu `Track`
-   - Zaktualizowano zapytania do bazy danych o nowe kolumny
+### 📌 Przykład działania (flow)
+1. Użytkownik wchodzi na stronę `/login`
+2. Podaje e-mail i hasło
+3. Supabase weryfikuje dane
+4. Po poprawnym logowaniu użytkownik zostaje przekierowany do panelu CRUD
+5. Gdy użytkownik jest zalogowany:
+   - może dodawać, edytować i usuwać rekordy
+   - ma dostęp do panelu głównego
+6. Wylogowanie usuwa aktywną sesję i przenosi na stronę logowania
 
-2. API/Service (`lib/tracksService.ts`):
-   - Funkcja `getTracks()` pobiera nowe pola z bazy danych
-   - Funkcja `addTrack()` obsługuje nowe pola przy dodawaniu utworów
-
-3. Frontend (`app/page.tsx`):
-   - Dodano pola formularza do wprowadzania roku i oceny
-   - Dodano kolumny w tabeli do wyświetlania roku i oceny
-   - Dodano walidację po stronie klienta (type="number", min/max)
-   - Obsługa konwersji wartości (parseInt dla roku, parseFloat dla oceny)
-     
+### 🛠️ Technologie użyte do logowania
+- **Supabase Auth**
+- **Vercel hosting**
+  
 ## Zrzuty ekranu
 
 ![Widok główny aplikacji](vercel1.png)  
